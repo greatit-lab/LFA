@@ -1,0 +1,34 @@
+project/
+│
+├── file_monitor/
+│   ├── __init__.py
+│   ├── base_date_folder_handler.py
+│   ├── target_folders_handler.py
+│   ├── wf_info_folder_handler.py
+│   ├── event_processor.py
+│   ├── start_monitoring.py
+│
+├── ui/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── destination_selection.py
+│   ├── eqpid_input.py
+│   ├── exclude_folder_selection.py
+│   ├── folder_monitor.py
+│   ├── folder_selection.py
+│   ├── monitoring_controls.py
+│   ├── override_names.py
+│   ├── regex_management.py
+│   ├── separation.py
+│   ├── image_trans.py
+│   └── resources/
+│       └── icons/
+│           └── icon.png
+│
+├── config.py
+├── event_handler.py
+├── logger.py
+├── main.py
+├── performance_monitor.py
+├── tray_icon.py
+├── utils.py
