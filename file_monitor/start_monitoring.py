@@ -18,6 +18,7 @@ def start_monitoring(app):
     save_to_folder = app.app_context.dest_folder
     target_image_folder = app.image_trans_frame.target_image_folder_combo.currentText()
     wait_time = app.image_trans_frame.wait_time_combo.currentText()
+    image_save_folder = app.app_context.image_save_folder
 
     base_date_folder = app.app_context.base_date_folder
     monitored_paths = app.app_context.monitored_folders
@@ -32,7 +33,8 @@ def start_monitoring(app):
         event_queue,
         processed_events,
         target_image_folder,
-        wait_time
+        wait_time,
+        image_save_folder
     )
 
     target_folders_handler = TargetFoldersHandler(
@@ -56,8 +58,10 @@ def start_monitoring(app):
     observer = Observer()
     if base_date_folder != "Unselected":
         observer.schedule(base_date_folder_handler, path=base_date_folder, recursive=True)
+        app.logger.log_debug(f"Monitoring started for base_date_folder: {base_date_folder}")
     for path in monitored_paths:
         observer.schedule(target_folders_handler, path=path, recursive=True)
+        app.logger.log_debug(f"Monitoring started for path: {path}")
     observer.schedule(wf_info_folder_handler, path=os.path.join(save_to_folder, 'wf_info'), recursive=True)
     
     observer.start()
