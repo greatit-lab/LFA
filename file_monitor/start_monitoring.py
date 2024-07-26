@@ -31,10 +31,7 @@ def start_monitoring(app):
         app.logger.log_event,
         app.logger.log_debug,
         event_queue,
-        processed_events,
-        target_image_folder,
-        wait_time,
-        image_save_folder
+        processed_events
     )
 
     target_folders_handler = TargetFoldersHandler(
@@ -52,10 +49,7 @@ def start_monitoring(app):
         app.logger.log_event,
         app.logger.log_debug,
         event_queue,
-        processed_events,
-        target_image_folder,
-        wait_time,
-        image_save_folder
+        processed_events
     )
 
     observer = Observer()
