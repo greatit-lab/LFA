@@ -53,7 +53,7 @@ def create_file_based_on_datetime(file_path, log_debug, log_event, save_to_folde
             new_file.write("")
         
         log_debug(f"event_processor: Created empty file {new_file_path} based on {file_path}")
-        log_event("event_processor: File Created", new_file_path)
+        log_event("File Created", new_file_path)
         return True
     else:
         log_debug(f"event_processor: No Date and Time found in {file_path}")
@@ -71,7 +71,7 @@ def replace_text_in_files(wf_file_info, target_folder, log_debug, log_event):
                 if "#1" in filename:
                     log_debug(f"event_processor: Renaming {old_path} to {new_path}")
                     os.rename(old_path, new_path)
-                    log_event("event_processor: File Renamed", f"{old_path} -> {new_filename}")
+                    log_event("File Renamed", f"{old_path} -> {new_filename}")
 
 def images_to_pdf(image_paths, output_folder, base_name, log_debug):
     if not os.path.exists(output_folder):
@@ -83,7 +83,7 @@ def images_to_pdf(image_paths, output_folder, base_name, log_debug):
 
     try:
         c = canvas.Canvas(pdf_path, pagesize=letter)
-        for image_path in sorted(image_paths, key=lambda x: int(re.search(r'\d+$', os.path.splitext(x)[0]).group())):
+        for image_path in sorted(image_paths, key=lambda x: int(re.search(r'\d+$', os.path.splitext(x)[0]).group())):	# type: ignore
             img = Image.open(image_path)
             img_width, img_height = img.size
 
@@ -174,7 +174,7 @@ def event_processor(event_queue, log_event, log_debug, perf_monitor, dest_folder
                         if normalize_path(src_path) != normalize_path(dest_path):
                             try:
                                 shutil.copy2(src_path, dest_path)
-                                log_event(f"event_processor: File {event_type} detected. Copied to {dest_path}")
+                                log_event(f"File {event_type} detected. Copied to {dest_path}")
                                 log_debug(f"event_processor: File {event_type} detected. Copied to {dest_path}")
                             except Exception as e:
                                 log_debug(f"event_processor: Error copying file {src_path} to {dest_path}: {str(e)}")
@@ -183,7 +183,7 @@ def event_processor(event_queue, log_event, log_debug, perf_monitor, dest_folder
                         matched = True
                         break
                 if not matched:
-                    log_event(f"event_processor: File {event_type} detected but no matching regex pattern found for copying.")
+                    log_event(f"File {event_type} detected but no matching regex pattern found for copying.")
                     log_debug(f"event_processor: File {event_type} detected but no matching regex pattern found for copying.")
                 
                 # Here, ensure create_file_based_on_datetime is called correctly
@@ -193,11 +193,11 @@ def event_processor(event_queue, log_event, log_debug, perf_monitor, dest_folder
                         log_debug(f"event_processor: File created based on datetime extraction from {src_path}")
 
             elif event_type == 'deleted':
-                log_event(f"event_processor: deleted", src_path)
+                log_event(f"deleted", src_path)
                 log_debug(f"event_processor: Processed 'deleted' event for file: {src_path}")
             elif event_type == 'moved':
                 dest_path = extra[0] if len(extra) > 0 else None
-                log_event(f"event_processor: moved", src_path, dest_path)
+                log_event(f"moved", src_path, dest_path)
                 log_debug(f"event_processor: Processed 'moved' event from {src_path} to {dest_path}")
 
             elif event_type in ['base_date_created', 'base_date_modified']:
