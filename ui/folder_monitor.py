@@ -73,18 +73,55 @@ class FolderMonitorFrame(QWidget):
         self.update_target_list()
         self.update_exclude_list()
 
+    def select_save_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder", "", QFileDialog.Option.ShowDirsOnly)
+        if folder:
+            self.app.dest_folder = folder
+            self.save_folder_label.setText(folder)
+            save_settings(
+                self.app.monitored_folders,
+                self.app.dest_folder,
+                self.app.regex_folders,
+                self.app.exclude_folders,
+                self.app.base_date_folder,
+                self.app.target_compare_folders,
+                self.app.target_image_folders,
+                self.app.wait_time,
+                self.app.image_save_folder
+            )
+
     def select_target_folders(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folders to Monitor", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
             self.app.monitored_folders.append(folder)
-            save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+            save_settings(
+                self.app.monitored_folders,
+                self.app.dest_folder,
+                self.app.regex_folders,
+                self.app.exclude_folders,
+                self.app.base_date_folder,
+                self.app.target_compare_folders,
+                self.app.target_image_folders,
+                self.app.wait_time,
+                self.app.image_save_folder
+            )
             self.update_target_list()
 
     def remove_target_folders(self):
         selected = self.target_list.selectedIndexes()
         for index in sorted([index.row() for index in selected], reverse=True):
             del self.app.monitored_folders[index]
-        save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+        save_settings(
+            self.app.monitored_folders,
+            self.app.dest_folder,
+            self.app.regex_folders,
+            self.app.exclude_folders,
+            self.app.base_date_folder,
+            self.app.target_compare_folders,
+            self.app.target_image_folders,
+            self.app.wait_time,
+            self.app.image_save_folder
+        )
         self.update_target_list()
 
     def update_target_list(self):
@@ -96,26 +133,39 @@ class FolderMonitorFrame(QWidget):
         folder = QFileDialog.getExistingDirectory(self, "Select Folders to Exclude from Monitoring", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
             self.app.exclude_folders.append(folder)
-            save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+            save_settings(
+                self.app.monitored_folders,
+                self.app.dest_folder,
+                self.app.regex_folders,
+                self.app.exclude_folders,
+                self.app.base_date_folder,
+                self.app.target_compare_folders,
+                self.app.target_image_folders,
+                self.app.wait_time,
+                self.app.image_save_folder
+            )
             self.update_exclude_list()
 
     def remove_exclude_folders(self):
         selected = self.exclude_list.selectedIndexes()
         for index in sorted([index.row() for index in selected], reverse=True):
             del self.app.exclude_folders[index]
-        save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+        save_settings(
+            self.app.monitored_folders,
+            self.app.dest_folder,
+            self.app.regex_folders,
+            self.app.exclude_folders,
+            self.app.base_date_folder,
+            self.app.target_compare_folders,
+            self.app.target_image_folders,
+            self.app.wait_time,
+            self.app.image_save_folder
+        )
         self.update_exclude_list()
 
     def update_exclude_list(self):
         model = QStringListModel(self.app.exclude_folders)
         self.exclude_list.setModel(model)
-
-    def select_save_folder(self):
-        folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder", "", QFileDialog.Option.ShowDirsOnly)
-        if folder:
-            self.app.dest_folder = folder
-            self.save_folder_label.setText(folder)
-            save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
 
     def set_controls_enabled(self, enabled):
         """Enable or disable controls for folder monitoring."""
