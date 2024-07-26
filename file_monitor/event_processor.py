@@ -44,9 +44,9 @@ def extract_common_name(file_path):
         base_name = os.path.basename(path)
         match = re.match(r"(.+)_\d+\.\w+$", base_name)
         if not match or not base_name.startswith(common_name):
-            retrun os.path.commonprefix([common_name, base_name])
+            return os.path.commonprefix([common_name, base_name])
     
-    retrun common_name
+    return common_name
 
 def create_file_based_on_datetime(file_path, log_debug, log_event, save_to_folder):
     encoding = ['cp949', 'utf-8', 'latin1']     # 시도할 인코딩 목록
