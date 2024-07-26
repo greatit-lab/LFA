@@ -13,10 +13,10 @@ class AppContext:
         self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder = load_settings()
         self.base_dir = base_dir
         self.logger = None
-        
+
     def initialize_logger(self):
         if self.logger is None:
-            self.logger = setup_event_logging(self.base_dir)
+            setup_event_logging(self.base_dir)
             add_debug_logging(self.base_dir)
 
     def save_settings(self):
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     base_dir = os.path.join(os.getcwd(), 'EventLog')
     app_context = AppContext(base_dir)
-    app_context.initialize_logger() #Initialize logger
+    app_context.initialize_logger() # Initialize logger
     
     main_window = MonitorApp(app_context, base_dir)
 
