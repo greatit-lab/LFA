@@ -66,4 +66,4 @@ class BaseDateFolderHandler(FileSystemEventHandler):
                 self.event_queue.put(('moved', normalized_src_path, normalized_dest_path))
                 self.log_debug(f"BaseDateFolderHandler: Moved event detected from {normalized_src_path} to {normalized_dest_path}")
             else:
-                self.log_debug(f"BaseDateFolderHandler: Moved event ignored from {normalized_src_path} to {normalized_path} due to debounce")
+                self.log_debug(f"BaseDateFolderHandler: Moved event ignored from {normalized_src_path} to {normalized_dest_path} due to debounce")
