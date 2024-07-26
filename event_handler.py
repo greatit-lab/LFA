@@ -68,8 +68,8 @@ class EventLogger:
         if self.debug_log_file_path and self.debug_mode:
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
             with open(self.debug_log_file_path, 'a', encoding='utf-8') as debug_log_file:
-                debug_log_file.write(f"{timestamp} - DEBUG: {message}\n")
+                debug_log_file.write(f"{timestamp} - DEBUG: event_handler: {message}\n")
 
     def set_debug_mode(self, debug_mode):
         self.debug_mode = debug_mode
-        self.log_debug(f"Debug mode enabled: {self.debug_mode}")
+        self.log_debug(f"event_handler: Debug mode enabled: {self.debug_mode}")
