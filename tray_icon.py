@@ -38,11 +38,12 @@ def run_tray_icon(app):
         stop_action.setEnabled(app.monitoring_controls.status_label.text() == "Status: Monitoring")
         stop_action.triggered.connect(stop_monitoring)
         quit_action = menu.addAction("Quit")
-        quit_action.setEnabled(app.monitoring_controls.status_label.text() in ["Status: Stopped", "Status: Idle"])
+        quit_action.setEnabled(app.monitoring_controls.status_label.text() in ["Status: Idle", "Status: Stopped"])
         quit_action.triggered.connect(quit_app)
         tray_icon.setContextMenu(menu)
 
     menu = QMenu()
     update_tray_menu()
+    tray_icon.setContextMenu(menu)
     tray_icon.show()
     return tray_icon
