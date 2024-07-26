@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QPushButton, QCheckBox, QHBoxLayout, QVBoxLayout, QLabel, QApplication, QMessageBox
 from PySide6.QtCore import Qt
 from threading import Thread
-from file_monitor import start_monitoring
+from file_monitor.start_monitoring import start_monitoring
 from config import save_settings
 
 class MonitoringControls(QWidget):
@@ -51,7 +51,7 @@ class MonitoringControls(QWidget):
         self.app.override_names_frame.set_controls_enabled(False)  # Disable target compare path controls
         self.app.regex_management_frame.set_controls_enabled(False)  # Disable regex management controls
         self.app.folder_monitor_frame.set_controls_enabled(False)  # Disable folder monitoring controls
-        self.debug_checkbox.setEnabled(False)   # Disable debug checkbox when monitoring starts
+        self.debug_checkbox.setEnabled(False)  # Disable debug checkbox when monitoring starts
 
         self.status_label.setText("Status: Monitoring")
         self.run_button.setEnabled(False)
@@ -78,7 +78,7 @@ class MonitoringControls(QWidget):
         self.app.override_names_frame.set_controls_enabled(True)  # Enable target compare path controls
         self.app.regex_management_frame.set_controls_enabled(True)  # Enable regex management controls
         self.app.folder_monitor_frame.set_controls_enabled(True)  # Enable folder monitoring controls
-        self.debug_checkbox.setEnabled(True)   # Enable debug checkbox when monitoring stops
+        self.debug_checkbox.setEnabled(True)  # Enable debug checkbox when monitoring stops
 
         self.app.tray_icon.setToolTip("LogFusion Agent (Stopped)")
         self.app.update_tray_menu()
