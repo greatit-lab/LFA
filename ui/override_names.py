@@ -68,7 +68,17 @@ class OverrideNamesFrame(QWidget):
                 QMessageBox.warning(self, "Warning", f"Please select a folder within {save_to_folder}.")
                 return
             self.app.target_compare_folders.append(folder)
-            save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+            save_settings(
+                self.app.monitored_folders,
+                self.app.dest_folder,
+                self.app.regex_folders,
+                self.app.exclude_folders,
+                self.app.base_date_folder,
+                self.app.target_compare_folders,
+                self.app.target_image_folders,
+                self.app.wait_time,
+                self.app.image_save_folder
+            )
             if self.app.logger:
                 self.app.logger.log_event("Target Compare Folder Added", folder)
                 self.app.logger.log_debug(f"Target compare folder added: {folder}")
@@ -82,7 +92,17 @@ class OverrideNamesFrame(QWidget):
             if self.app.logger:
                 self.app.logger.log_event("Target Compare Folder Removed", folder)
                 self.app.logger.log_debug(f"Target compare folder removed: {folder}")
-        save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+        save_settings(
+            self.app.monitored_folders,
+            self.app.dest_folder,
+            self.app.regex_folders,
+            self.app.exclude_folders,
+            self.app.base_date_folder,
+            self.app.target_compare_folders,
+            self.app.target_image_folders,
+            self.app.wait_time,
+            self.app.image_save_folder
+        )
         self.update_target_compare_list()
 
     def update_target_compare_list(self):
