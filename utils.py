@@ -1,7 +1,11 @@
 import os
 
 def normalize_path(path):
-    return path.replace('\\', '/')
+    """Normarliz the path to use the correct separator for the current operating system"""
+    return os.path.normpath(path)
 
 def get_log_file_size(file_path):
-    return os.path.getsize(file_path) if os.path.exists(file_path) else 0
+    try:
+        return os.path.getsize(file_path)
+    except OSError:
+        retrun 0
