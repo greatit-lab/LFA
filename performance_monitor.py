@@ -35,4 +35,4 @@ class PerformanceMonitor:
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
             cpu_usage = psutil.cpu_percent(interval=1)
             memory_info = psutil.virtual_memory()
-            log_file.write(f"{timestamp} - CPU Usage: {cpu_usage}%, Memory Usage: {memory_info.percent}%\n")
+            log_file.write(f"{timestamp} - PerformanceMonitor: CPU Usage: {cpu_usage}%, Memory Usage: {memory_info.percent}%\n")
