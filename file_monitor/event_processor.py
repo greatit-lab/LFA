@@ -30,9 +30,10 @@ def replace_text_in_files(wf_file_info, target_folder, log_debug, log_event):
                     os.rename(old_path, new_path)
                     log_event("File Renamed", f"{old_path} -> {new_filename}")
 
-def extract_common_name(file_path):
+def extract_common_name(file_paths):
     if not file_paths:
         return ""
+    
     base_name = os.path.basename(file_paths[0])
     match = re.match(r"(.+)_\d+\.\w+$", base_name)
     if not match:
