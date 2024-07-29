@@ -37,7 +37,8 @@ class TargetFoldersHandler(FileSystemEventHandler):
                 creation_times = self.creation_times[normalized_path]
                 if datetime.now() - creation_times < timedelta(seconds=1):
                     self.log_debug(f"TargetFoldersHandler: ignoring modified event for {normalized_path} immediately after creation")
-                
+                    return
+            
             event_id = ('modified', normalized_path)
             if event_id not in self.processed_events or datetime.now() - self.processed_events[event_id] > timedelta(seconds=1):
                 self.processed_events[event_id] = datetime.now()
