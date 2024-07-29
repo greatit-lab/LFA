@@ -42,7 +42,6 @@ class BaseDateFolderHandler(FileSystemEventHandler):
             if event_id not in self.processed_events or datetime.now() - self.processed_events[event_id] > self.debounce_time:
                 self.processed_events[event_id] = datetime.now()
                 success = create_file_based_on_datetime(normalized_path, self.log_debug, self.log_event, self.save_to_folder)
-                self.event_queue.put(('base_date_modified', normalized_path, self.target_image_folder, self.wait_time, self.image_save_folder))
                 if success:
                     self.log_debug(f"BaseDateFolderHandler: Modified event detected for {normalized_path}")
             else:
