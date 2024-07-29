@@ -27,7 +27,9 @@ def add_debug_logging(log_dir):
 
     logger = logging.getLogger('debug_logger')
     logger.setLevel(logging.DEBUG)
-    logger.addHandler(debug_handler)
+    if not logger.hasHandlers():
+        logger.addHandler(debug_handler)
+    
     logger.debug(f"Debug logging added with file: {debug_log_file_path}")
 
 def remove_debug_logging():
