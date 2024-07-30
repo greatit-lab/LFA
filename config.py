@@ -32,7 +32,8 @@ def load_settings():
         config['Exclude'] = {}
         config['General'] = {'base_date_folder': 'Unselected', 'target_compare_folders': ''}
         config['Image'] = {'target_image_folder': 'Unselected', 'wait_time': '60', 'image_save_folder': ''}
-        save_settings([], '', {}, [], 'Unselected', [], 'Unselected', '60', '')
+        config['Upload'] = {'wafer_flat_data_path': 'Unselected', 'prealign_data_path': 'Unselected', 'image_data_path': 'Unselected'}
+        save_settings([], '', {}, [], 'Unselected', [], 'Unselected', '60', '', 'Unselected', 'Unselected', 'Unselected')
     else:
         with open(CONFIG_FILE, 'r', encoding='utf-8') as configfile:
             config.read_file(configfile)
@@ -49,6 +50,8 @@ def load_settings():
             config['General'] = {'base_date_folder': 'Unselected', 'target_compare_folders': ''}
         if 'Image' not in config:
             config['Image'] = {'target_image_folder': 'Unselected', 'wait_time': '60', 'image_save_folder': ''}
+        if 'Upload' not in config:
+            config['Upload'] = {'wafer_flat_data_path': 'Unselected', 'prealign_data_path': 'Unselected', 'image_data_path': 'Unselected'}
 
     monitored_folders = [normalize_path(folder) for key, folder in config.items('Folders')]
     dest_folder = normalize_path(config.get('Destination', 'folder', fallback=''))
@@ -63,9 +66,13 @@ def load_settings():
     wait_time = config.get('Image', 'wait_time', fallback='60')
     image_save_folder = config.get('Image', 'image_save_folder', fallback='')
 
-    return monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder
+    wafer_flat_data_path = config.get('Upload', 'wafer_flat_data_path', fallback='Unselected')
+    prealign_data_path = config.get('Upload', 'prealign_data_path', fallback='Unselected')
+    image_data_path = config.get('Upload', 'image_data_path', fallback='Unselected')
 
-def save_settings(monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder):
+    return monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder, wafer_flat_data_path, prealign_data_path, image_data_path
+
+def save_settings(monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder, wafer_flat_data_path, prealign_data_path, image_data_path):
     config = CaseSensitiveConfigParser()
     # Filter out base_date_folder and wf_info from monitored_folders before saving
     filtered_folders = [folder for folder in monitored_folders if folder != base_date_folder and not folder.startswith(os.path.join(dest_folder, 'wf_info'))]
@@ -81,6 +88,11 @@ def save_settings(monitored_folders, dest_folder, regex_folders, exclude_folders
         'target_image_folder': target_image_folder,
         'wait_time': wait_time,
         'image_save_folder': image_save_folder
+    }
+    config['Upload'] = {
+        'wafer_flat_data_path': wafer_flat_data_path,
+        'prealign_data_path': prealign_data_path,
+        'image_data_path': image_data_path
     }
 
     with open(CONFIG_FILE, 'w', encoding='utf-8') as configfile:
