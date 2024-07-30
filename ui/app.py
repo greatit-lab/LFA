@@ -7,7 +7,8 @@ from ui.folder_monitor import FolderMonitorFrame
 from ui.regex_management import RegexManagementFrame
 from ui.monitoring_controls import MonitoringControls
 from ui.override_names import OverrideNamesFrame
-from ui.image_trans import ImageTransFrame  # 새로운 프레임 추가
+from ui.image_trans import ImageTransFrame
+from ui.upload_data import UploadDataFrame  # 이 줄을 추가하여 UploadDataFrame을 가져옵니다
 from tray_icon import run_tray_icon
 from threading import Thread, Event
 from event_handler import EventLogger
@@ -20,11 +21,26 @@ def resource_path(relative_path):
 
 class AppContext:
     def __init__(self):
-        self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder = load_settings()
+        (self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, 
+         self.base_date_folder, self.target_compare_folders, self.target_image_folder, 
+         self.wait_time, self.image_save_folder, self.wafer_flat_data_path, 
+         self.prealign_data_path, self.image_data_path) = load_settings()
 
     def save_settings(self):
-        save_settings(self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder)
-
+        save_settings(
+            self.monitored_folders,
+            self.dest_folder,
+            self.regex_folders,
+            self.exclude_folders,
+            self.base_date_folder,
+            self.target_compare_folders,
+            self.target_image_folder,
+            self.wait_time,
+            self.image_save_folder,
+            self.wafer_flat_data_path,
+            self.prealign_data_path,
+            self.image_data_path
+        )
 class MonitorApp(QMainWindow):
     def __init__(self, app_context, base_dir):
         super().__init__()
@@ -52,13 +68,16 @@ class MonitorApp(QMainWindow):
         self.folder_monitor_frame = FolderMonitorFrame(app=self.app_context)
         self.regex_management_frame = RegexManagementFrame(app=self.app_context)
         self.override_names_frame = OverrideNamesFrame(app=self.app_context)
-        self.image_trans_frame = ImageTransFrame(app=self.app_context)  # 새로운 프레임 추가
+        self.image_trans_frame = ImageTransFrame(app=self.app_context)  # 기존의 새로운 프레임 추가
+        self.upload_data_frame = UploadDataFrame(app=self.app_context)  # 새로 추가된 UploadDataFrame
         self.monitoring_controls = MonitoringControls(parent=self, app=self)
 
         self.tabs.addTab(self.folder_monitor_frame, "Monitor Settings")
         self.tabs.addTab(self.regex_management_frame, "Regex")
         self.tabs.addTab(self.override_names_frame, "Override Names")
-        self.tabs.addTab(self.image_trans_frame, "Image Trans")  # 새로운 탭 추가
+        self.tabs.addTab(self.image_trans_frame, "Image Trans")  # 기존의 새로운 탭 추가
+        self.tabs.addTab(self.upload_data_frame, "Upload Data")  # 새로 추가된 탭
+
         layout.addWidget(self.tabs)
         layout.addWidget(self.monitoring_controls)
 
