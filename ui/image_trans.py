@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QHBoxLayout, QFileDialog, QMessageBox, QGroupBox
-from PySide6.QtCore import Qt
 from config import save_settings
+import os
 
 class ImageTransFrame(QWidget):
     def __init__(self, parent=None, app=None):
@@ -49,7 +49,7 @@ class ImageTransFrame(QWidget):
         # Image Save Folder Section
         save_folder_group = QGroupBox("Image Save Folder")
         save_folder_layout = QHBoxLayout()
-        self.image_save_folder_path = QLabel(self.app.image_save_folder)
+        self.image_save_folder_path = QLabel(os.path.normpath(self.app.image_save_folder))
         self.image_save_folder_button = QPushButton("Select Folder")
         self.image_save_folder_button.clicked.connect(self.select_image_save_folder)
 
@@ -70,11 +70,12 @@ class ImageTransFrame(QWidget):
         save_to_folder = self.app.dest_folder
         folder = QFileDialog.getExistingDirectory(self, "Select Image Save Folder", save_to_folder, QFileDialog.Option.ShowDirsOnly)
         if folder:
-            if not folder.startswith(save_to_folder):
+            normalized_folder = os.path.normpath(folder)  # 경로를 정규화하여 운영 체제에 맞게 표시
+            if not normalized_folder.startswith(os.path.abspath(save_to_folder)):
                 QMessageBox.warning(self, "Warning", f"Please select a folder within {save_to_folder}.")
                 return
-            self.image_save_folder_path.setText(folder)
-            self.app.image_save_folder = folder
+            self.image_save_folder_path.setText(normalized_folder)
+            self.app.image_save_folder = normalized_folder
             self.update_settings()
 
     def update_target_image_folder(self, text):
@@ -95,5 +96,15 @@ class ImageTransFrame(QWidget):
             self.app.target_compare_folders,
             self.app.target_image_folder,
             self.app.wait_time,
-            self.app.image_save_folder
+            self.app.image_save_folder,
+            self.app.wafer_flat_data_path,
+            self.app.prealign_data_path,
+            self.app.image_data_path
         )
+
+    def set_controls_enabled(self, enabled):
+        """Enable or disable controls for image trans."""
+        self.target_image_folder_combo.setEnabled(enabled)
+        self.clear_button.setEnabled(enabled)
+        self.wait_time_combo.setEnabled(enabled)
+        self.image_save_folder_button.setEnabled(enabled)
