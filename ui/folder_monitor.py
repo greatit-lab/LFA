@@ -76,8 +76,8 @@ class FolderMonitorFrame(QWidget):
     def select_save_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
-            self.app.dest_folder = folder
-            self.save_folder_label.setText(folder)
+            self.app.dest_folder = os.path.normpath(folder)  # 경로를 정규화하여 운영 체제에 맞게 표시
+            self.save_folder_label.setText(self.app.dest_folder)
             save_settings(
                 self.app.monitored_folders,
                 self.app.dest_folder,
@@ -85,15 +85,18 @@ class FolderMonitorFrame(QWidget):
                 self.app.exclude_folders,
                 self.app.base_date_folder,
                 self.app.target_compare_folders,
-                self.app.target_image_folders,
+                self.app.target_image_folder,
                 self.app.wait_time,
-                self.app.image_save_folder
+                self.app.image_save_folder,
+                self.app.wafer_flat_data_path,
+                self.app.prealign_data_path,
+                self.app.image_data_path
             )
 
     def select_target_folders(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folders to Monitor", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
-            self.app.monitored_folders.append(folder)
+            self.app.monitored_folders.append(os.path.normpath(folder))  # 경로를 정규화하여 운영 체제에 맞게 표시
             save_settings(
                 self.app.monitored_folders,
                 self.app.dest_folder,
@@ -101,9 +104,12 @@ class FolderMonitorFrame(QWidget):
                 self.app.exclude_folders,
                 self.app.base_date_folder,
                 self.app.target_compare_folders,
-                self.app.target_image_folders,
+                self.app.target_image_folder,
                 self.app.wait_time,
-                self.app.image_save_folder
+                self.app.image_save_folder,
+                self.app.wafer_flat_data_path,
+                self.app.prealign_data_path,
+                self.app.image_data_path
             )
             self.update_target_list()
 
@@ -118,9 +124,12 @@ class FolderMonitorFrame(QWidget):
             self.app.exclude_folders,
             self.app.base_date_folder,
             self.app.target_compare_folders,
-            self.app.target_image_folders,
+            self.app.target_image_folder,
             self.app.wait_time,
-            self.app.image_save_folder
+            self.app.image_save_folder,
+            self.app.wafer_flat_data_path,
+            self.app.prealign_data_path,
+            self.app.image_data_path
         )
         self.update_target_list()
 
@@ -132,7 +141,7 @@ class FolderMonitorFrame(QWidget):
     def select_exclude_folders(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folders to Exclude from Monitoring", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
-            self.app.exclude_folders.append(folder)
+            self.app.exclude_folders.append(os.path.normpath(folder))  # 경로를 정규화하여 운영 체제에 맞게 표시
             save_settings(
                 self.app.monitored_folders,
                 self.app.dest_folder,
@@ -140,9 +149,12 @@ class FolderMonitorFrame(QWidget):
                 self.app.exclude_folders,
                 self.app.base_date_folder,
                 self.app.target_compare_folders,
-                self.app.target_image_folders,
+                self.app.target_image_folder,
                 self.app.wait_time,
-                self.app.image_save_folder
+                self.app.image_save_folder,
+                self.app.wafer_flat_data_path,
+                self.app.prealign_data_path,
+                self.app.image_data_path
             )
             self.update_exclude_list()
 
@@ -157,9 +169,12 @@ class FolderMonitorFrame(QWidget):
             self.app.exclude_folders,
             self.app.base_date_folder,
             self.app.target_compare_folders,
-            self.app.target_image_folders,
+            self.app.target_image_folder,
             self.app.wait_time,
-            self.app.image_save_folder
+            self.app.image_save_folder,
+            self.app.wafer_flat_data_path,
+            self.app.prealign_data_path,
+            self.app.image_data_path
         )
         self.update_exclude_list()
 
