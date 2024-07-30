@@ -51,6 +51,8 @@ class MonitoringControls(QWidget):
         self.app.override_names_frame.set_controls_enabled(False)  # Disable target compare path controls
         self.app.regex_management_frame.set_controls_enabled(False)  # Disable regex management controls
         self.app.folder_monitor_frame.set_controls_enabled(False)  # Disable folder monitoring controls
+        self.app.image_trans_frame.set_controls_enabled(False)  # Disable image trans controls
+        self.app.upload_data_frame.set_controls_enabled(False)  # Disable upload data controls
         self.debug_checkbox.setEnabled(False)  # Disable debug checkbox when monitoring starts
 
         self.status_label.setText("Status: Monitoring")
@@ -78,6 +80,8 @@ class MonitoringControls(QWidget):
         self.app.override_names_frame.set_controls_enabled(True)  # Enable target compare path controls
         self.app.regex_management_frame.set_controls_enabled(True)  # Enable regex management controls
         self.app.folder_monitor_frame.set_controls_enabled(True)  # Enable folder monitoring controls
+        self.app.image_trans_frame.set_controls_enabled(True)  # Enable image trans controls
+        self.app.upload_data_frame.set_controls_enabled(True)  # Enable upload data controls
         self.debug_checkbox.setEnabled(True)  # Enable debug checkbox when monitoring stops
 
         self.app.tray_icon.setToolTip("LogFusion Agent (Stopped)")
