@@ -10,7 +10,7 @@ from logger import setup_event_logging, add_debug_logging, update_logging_config
 class AppContext:
     def __init__(self, base_dir):
         self.eqpid = load_eqpid()  # Load EQPID
-        self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder = load_settings()
+        self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder, self.wafer_flat_data_path, self.prealign_data_path, self.image_data_path = load_settings()
         self.base_dir = base_dir
         self.logger = None
 
@@ -29,7 +29,10 @@ class AppContext:
             self.target_compare_folders,
             self.target_image_folder,
             self.wait_time,
-            self.image_save_folder
+            self.image_save_folder,
+            self.wafer_flat_data_path,
+            self.prealign_data_path,
+            self.image_data_path
         )
 
 def is_another_instance_running(pid_file):
