@@ -23,7 +23,7 @@ class DestinationSelectionFrame(QWidget):
 
         # 현재 선택된 폴더를 표시하는 라벨을 만듭니다.
         # 선택된 폴더가 없다면 'No folder selected'라고 표시됩니다.
-        self.pathLabel = QLabel(self.app_context.dest_folder if self.app_context.dest_folder else "No folder selected")
+        self.pathLabel = QLabel(self.app_context.dest_folder if self.app_context.dest_folder else "No folder selected")  # type: ignore
 
         # 폴더 선택 버튼을 수평으로 배치하기 위한 레이아웃을 만듭니다.
         self.buttonLayout = QHBoxLayout()
@@ -61,4 +61,4 @@ class DestinationSelectionFrame(QWidget):
             # 경로 라벨에 선택된 폴더 경로를 표시합니다.
             self.pathLabel.setText(folder)
             # 설정을 저장합니다.
-            save_settings(self.app_context.monitored_folders, self.app_context.dest_folder, self.app_context.regex_folders, self.app_context.exclude_folders, self.app_context.base_date_folder, self.app_context.target_compare_folders)
+            save_settings(self.app_context.monitored_folders, self.app_context.dest_folder, self.app_context.regex_folders, self.app_context.exclude_folders, self.app_context.base_date_folder, self.app_context.target_compare_folders)	# type: ignore
