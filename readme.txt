@@ -1,13 +1,34 @@
-folder_monitor/
-├── main.py
-├── config/
-│   ├── logging_config.py
-│   ├── settings_manager.py
-├── handlers/
-│   └── event_handler.py
+├── file_monitor/
+│   ├── __init__.py
+│   ├── base_date_folder_handler.py
+│   ├── event_processor.py
+│   ├── start_monitoring.py
+│   ├── target_folders_handler.py
+│   ├── wf_info_folder_handler.py
+│
+├── resources/
+│   └── icons/
+│       └── icon.png
+│
 ├── ui/
-│   ├── monitor_app.py
-│   └── tray.py
-├── assets/
-│   └── tray_icon.png
+│   ├── __init__.py
+│   ├── app.py
+│   ├── destination_selection.py
+│   ├── eqpid_input.py
+│   ├── exclude_folder_selection.py
+│   ├── folder_monitor.py
+│   ├── folder_selection.py
+│   ├── image_trans.py
+│   ├── monitoring_controls.py
+│   ├── override_names.py
+│   ├── regex_management.py
+│   ├── separation.py
+│
+├── config.py
+├── event_handler.py
+├── logger.py
+├── main.py
+├── performance_monitor.py
+├── tray_icon.py
+├── utils.py
 └── settings.ini
