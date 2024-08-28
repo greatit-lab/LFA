@@ -64,9 +64,22 @@ class OverrideNamesFrame(QWidget):
 
     def update_base_date_combo(self):
         """기본 날짜 콤보박스를 업데이트합니다."""
+        current_selection = self.base_date_combo.currentText()
+        
+        self.base_date_combo.blockSignals(True)  # 신호를 일시적으로 차단하여 불필요한 신호를 방지
+        
         self.base_date_combo.clear()
         self.base_date_combo.addItem("Unselected")  # 기본값을 추가합니다.
         self.base_date_combo.addItems(self.app.regex_folders.values())  # 앱의 폴더 값을 추가합니다.
+        
+        # 기존의 선택이 유지될 수 있도록 설정
+        if current_selection in self.app.regex_folders.values():
+            self.base_date_combo.setCurrentText(current_selection)
+        else:
+            # 만약 current_selection이 초기화된 리스트에 없다면, 설정 파일에서 불러온 값을 사용
+            self.base_date_combo.setCurrentText(self.app.base_date_folder)
+        
+        self.base_date_combo.blockSignals(False)  # 신호를 다시 활성화
 
     def clear_base_date(self):
         """기본 날짜 콤보박스를 'Unselected'로 초기화합니다."""
