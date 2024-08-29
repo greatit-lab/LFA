@@ -3,9 +3,10 @@ import pandas as pd
 from upload.db_info import get_db_engine
 
 class ImageDataHandler:
-    def __init__(self, folder_to_track):
+    def __init__(self, folder_to_track, eqpid):
         self.folder_to_track = folder_to_track
         self.processed_files = set()
+        self.eqpid = eqpid  # EqpId 값을 생성자에서 받아옵니다.
 
     def on_modified(self, event):
         for filename in os.listdir(self.folder_to_track):
