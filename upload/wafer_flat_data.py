@@ -4,9 +4,10 @@ import pandas as pd
 from upload.db_info import get_db_engine
 
 class WaferFlatHandler:
-    def __init__(self, folder_to_track):
+    def __init__(self, folder_to_track, eqpid):
         self.folder_to_track = folder_to_track
         self.processed_files = set()
+        self.eqpid = eqpid  # EqpId 값을 생성자에서 받아옵니다.
 
     def on_modified(self, event):
         for filename in os.listdir(self.folder_to_track):
@@ -65,6 +66,7 @@ class WaferFlatHandler:
                     'Film': data.get('Film Name'),
                     'Point': int(values[0]) if len(values) > 0 else None,
                     'MSE': float(values[1]) if len(values) > 1 else None,
+                    'EqpId': self.eqpid  # EqpId를 추가합니다.
                 }
 
                 for header in expected_header[2:]:
