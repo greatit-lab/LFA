@@ -1,14 +1,21 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QHBoxLayout, QGroupBox
+from configparser import ConfigParser
 from config import save_settings
-from upload.wafer_flat_module import WaferFlatHandler
-from upload.prealign_module import PreAlignHandler
-from upload.image_data_module import ImageDataHandler
+from upload.wafer_flat_data import WaferFlatHandler
+from upload.prealign_data import PreAlignHandler
+from upload.image_data import ImageDataHandler
 
 class UploadDataFrame(QWidget):
     def __init__(self, parent=None, app=None):
         super().__init__(parent)
         self.app = app
+        self.eqpid = self.load_eqpid()  # EqpId 값을 로드합니다.
         self.initUI()
+
+    def load_eqpid(self):
+        config = ConfigParser()
+        config.read('eqpid.ini')  # eqpid.ini 파일을 읽습니다.
+        return config['DEFAULT'].get('EqpId', 'Unknown')  # EqpId 값을 가져옵니다.
 
     def initUI(self):
         main_layout = QVBoxLayout()
