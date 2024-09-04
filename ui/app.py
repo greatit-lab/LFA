@@ -24,10 +24,11 @@ def resource_path(relative_path):
 class AppContext:
     def __init__(self):
         # 설정 파일에서 데이터를 불러옵니다.
-        (self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, 
-         self.base_date_folder, self.target_compare_folders, self.target_image_folder, 
-         self.wait_time, self.image_save_folder, self.wafer_flat_data_path, 
-         self.prealign_data_path, self.image_data_path) = load_settings()
+        (
+            self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder,
+            self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder, self.wafer_flat_data_path,
+            self.prealign_data_path, self.image_data_path, self.error_data_path, self.event_data_path, self.wave_data_path
+        ) = load_settings()
 
     # 현재 설정을 저장하는 함수입니다.
     def save_settings(self):
@@ -43,7 +44,10 @@ class AppContext:
             self.image_save_folder,
             self.wafer_flat_data_path,
             self.prealign_data_path,
-            self.image_data_path
+            self.image_data_path,
+            self.error_data_path,
+            self.event_data_path,
+            self.wave_data_path
         )
 
 # 메인 애플리케이션 클래스입니다. QMainWindow를 상속하여 GUI의 메인 창을 관리합니다.
