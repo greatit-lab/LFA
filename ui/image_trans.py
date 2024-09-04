@@ -20,8 +20,8 @@ class ImageTransFrame(QWidget):
         self.target_image_folder_label = QLabel("Target Image Folder")  # 타겟 이미지 폴더 레이블을 생성합니다.
         self.target_image_folder_combo = QComboBox()  # 타겟 이미지 폴더를 선택하는 콤보박스를 생성합니다.
         self.target_image_folder_combo.addItem("Unselected")  # 기본값으로 'Unselected'를 추가합니다.
-        self.target_image_folder_combo.addItems(self.app.regex_folders.values())  # 설정에서 정규식 폴더 목록을 추가합니다.
-        self.target_image_folder_combo.setCurrentText(self.app.target_image_folder)  # 현재 설정된 타겟 폴더를 선택합니다.
+        self.target_image_folder_combo.addItems(self.app.regex_folders.values())    # type: ignore  # 설정에서 정규식 폴더 목록을 추가합니다.
+        self.target_image_folder_combo.setCurrentText(self.app.target_image_folder)     # type: ignore  # 현재 설정된 타겟 폴더를 선택합니다.
         self.target_image_folder_combo.currentTextChanged.connect(self.update_target_image_folder)  # 선택된 폴더가 변경되면 업데이트합니다.
         self.clear_button = QPushButton("Clear")  # 타겟 폴더 선택을 초기화할 수 있는 버튼을 생성합니다.
         self.clear_button.clicked.connect(self.clear_target_image_folder)  # 버튼 클릭 시 타겟 폴더를 초기화합니다.
@@ -36,7 +36,7 @@ class ImageTransFrame(QWidget):
         self.wait_time_combo = QComboBox()  # 대기 시간을 선택하는 콤보박스를 생성합니다.
         wait_times = ["60", "120", "180", "240", "300", "600"]  # 대기 시간을 선택할 수 있는 옵션을 추가합니다.
         self.wait_time_combo.addItems(wait_times)
-        self.wait_time_combo.setCurrentText(self.app.wait_time)  # 현재 설정된 대기 시간을 선택합니다.
+        self.wait_time_combo.setCurrentText(self.app.wait_time)     # type: ignore  # 현재 설정된 대기 시간을 선택합니다.
         self.wait_time_combo.currentTextChanged.connect(self.update_wait_time)  # 대기 시간이 변경되면 업데이트합니다.
 
         wait_time_layout.addWidget(self.wait_time_label)
@@ -49,7 +49,7 @@ class ImageTransFrame(QWidget):
         # Image Save Folder 섹션
         save_folder_group = QGroupBox("Image Save Folder")  # 이미지 저장 폴더 그룹 박스를 생성합니다.
         save_folder_layout = QHBoxLayout()  # 이미지 저장 폴더 섹션의 수평 레이아웃을 설정합니다.
-        self.image_save_folder_path = QLabel(os.path.normpath(self.app.image_save_folder))  # 현재 이미지 저장 폴더 경로를 표시합니다.
+        self.image_save_folder_path = QLabel(os.path.normpath(self.app.image_save_folder))      # type: ignore  # 현재 이미지 저장 폴더 경로를 표시합니다.
         self.image_save_folder_button = QPushButton("Select Folder")  # 폴더 선택 버튼을 생성합니다.
         self.image_save_folder_button.clicked.connect(self.select_image_save_folder)  # 버튼 클릭 시 폴더 선택을 수행합니다.
 
@@ -69,7 +69,7 @@ class ImageTransFrame(QWidget):
 
     def select_image_save_folder(self):
         """이미지를 저장할 폴더를 선택합니다."""
-        save_to_folder = self.app.dest_folder
+        save_to_folder = self.app.dest_folder   # type: ignore
         folder = QFileDialog.getExistingDirectory(self, "Select Image Save Folder", save_to_folder, QFileDialog.Option.ShowDirsOnly)
         if folder:
             normalized_folder = os.path.normpath(folder)  # 선택된 경로를 정규화하여 운영 체제에 맞게 표시합니다.
@@ -77,17 +77,17 @@ class ImageTransFrame(QWidget):
                 QMessageBox.warning(self, "Warning", f"Please select a folder within {save_to_folder}.")
                 return
             self.image_save_folder_path.setText(normalized_folder)
-            self.app.image_save_folder = normalized_folder
+            self.app.image_save_folder = normalized_folder      # type: ignore
             self.update_settings()
 
     def update_target_image_folder(self, text):
         """선택된 타겟 이미지 폴더를 업데이트합니다."""
-        self.app.target_image_folder = text
+        self.app.target_image_folder = text     # type: ignore
         self.update_settings()
 
     def update_wait_time(self, text):
         """대기 시간을 업데이트합니다."""
-        self.app.wait_time = text
+        self.app.wait_time = text   # type: ignore
         self.update_settings()
 
     def update_settings(self):
@@ -104,7 +104,10 @@ class ImageTransFrame(QWidget):
             self.app.image_save_folder,
             self.app.wafer_flat_data_path,
             self.app.prealign_data_path,
-            self.app.image_data_path
+            self.app.image_data_path,
+            self.app.error_data_path,
+            self.app.event_data_path,
+            self.app.wave_data_path
         )
 
     def set_controls_enabled(self, enabled):
