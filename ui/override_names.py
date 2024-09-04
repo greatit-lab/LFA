@@ -70,14 +70,14 @@ class OverrideNamesFrame(QWidget):
         
         self.base_date_combo.clear()
         self.base_date_combo.addItem("Unselected")  # 기본값을 추가합니다.
-        self.base_date_combo.addItems(self.app.regex_folders.values())  # 앱의 폴더 값을 추가합니다.
+        self.base_date_combo.addItems(self.app.regex_folders.values())      # type: ignore  # 앱의 폴더 값을 추가합니다.
         
         # 기존의 선택이 유지될 수 있도록 설정
-        if current_selection in self.app.regex_folders.values():
+        if current_selection in self.app.regex_folders.values():    # type: ignore
             self.base_date_combo.setCurrentText(current_selection)
         else:
             # 만약 current_selection이 초기화된 리스트에 없다면, 설정 파일에서 불러온 값을 사용
-            self.base_date_combo.setCurrentText(self.app.base_date_folder)
+            self.base_date_combo.setCurrentText(self.app.base_date_folder)      # type: ignore
         
         self.base_date_combo.blockSignals(False)  # 신호를 다시 활성화
 
@@ -87,19 +87,19 @@ class OverrideNamesFrame(QWidget):
 
     def update_base_date_path(self, text):
         """기본 날짜 경로를 업데이트하고 설정을 저장합니다."""
-        self.app.base_date_folder = text
+        self.app.base_date_folder = text    # type: ignore
         self.update_settings()
 
     def add_target_compare_path(self):
         """대상 비교 경로를 추가합니다."""
-        save_to_folder = self.app.dest_folder
+        save_to_folder = self.app.dest_folder   # type: ignore
         folder = QFileDialog.getExistingDirectory(self, "Select Target Compare Folder", save_to_folder, QFileDialog.Option.ShowDirsOnly)
         if folder:
             normalized_folder = os.path.normpath(folder)  # 선택된 폴더 경로를 정규화합니다.
             if not normalized_folder.startswith(os.path.abspath(save_to_folder)):
                 QMessageBox.warning(self, "Warning", f"Please select a folder within {save_to_folder}.")
                 return
-            self.app.target_compare_folders.append(normalized_folder)
+            self.app.target_compare_folders.append(normalized_folder)   # type: ignore
             save_settings(
                 self.app.monitored_folders,
                 self.app.dest_folder,
@@ -112,22 +112,25 @@ class OverrideNamesFrame(QWidget):
                 self.app.image_save_folder,
                 self.app.wafer_flat_data_path,
                 self.app.prealign_data_path,
-                self.app.image_data_path
-            )
-            if self.app.logger:
-                self.app.logger.log_event("Target Compare Folder Added", folder)
-                self.app.logger.log_debug(f"Target compare folder added: {folder}")
+                self.app.image_data_path,
+                self.app.error_data_path,
+                self.app.event_data_path,
+                self.app.wave_data_path
+            )   # type: ignore
+            if self.app.logger:     # type: ignore
+                self.app.logger.log_event("Target Compare Folder Added", folder)    # type: ignore
+                self.app.logger.log_debug(f"Target compare folder added: {folder}")     # type: ignore
             self.update_target_compare_list()
 
     def remove_target_compare_path(self):
         """선택된 대상 비교 경로를 제거합니다."""
         selected = self.target_compare_list.selectedIndexes()
         for index in sorted(selected, key=lambda idx: idx.row(), reverse=True):
-            folder = self.app.target_compare_folders[index.row()]
-            del self.app.target_compare_folders[index.row()]
-            if self.app.logger:
-                self.app.logger.log_event("Target Compare Folder Removed", folder)
-                self.app.logger.log_debug(f"Target compare folder removed: {folder}")
+            folder = self.app.target_compare_folders[index.row()]   # type: ignore
+            del self.app.target_compare_folders[index.row()]    # type: ignore
+            if self.app.logger:     # type: ignore
+                self.app.logger.log_event("Target Compare Folder Removed", folder)      # type: ignore
+                self.app.logger.log_debug(f"Target compare folder removed: {folder}")   # type: ignore
         save_settings(
             self.app.monitored_folders,
             self.app.dest_folder,
@@ -140,13 +143,16 @@ class OverrideNamesFrame(QWidget):
             self.app.image_save_folder,
             self.app.wafer_flat_data_path,
             self.app.prealign_data_path,
-            self.app.image_data_path
+            self.app.image_data_path,
+            self.app.error_data_path,
+            self.app.event_data_path,
+            self.app.wave_data_path
         )
         self.update_target_compare_list()
 
     def update_target_compare_list(self):
         """대상 비교 경로 리스트를 업데이트합니다."""
-        normalized_folders = [os.path.normpath(folder) for folder in self.app.target_compare_folders]  # 폴더 경로를 정규화합니다.
+        normalized_folders = [os.path.normpath(folder) for folder in self.app.target_compare_folders]   # type: ignore  # 폴더 경로를 정규화합니다.
         model = QStringListModel(normalized_folders)
         self.target_compare_list.setModel(model)
 
@@ -172,5 +178,8 @@ class OverrideNamesFrame(QWidget):
             self.app.image_save_folder,
             self.app.wafer_flat_data_path,
             self.app.prealign_data_path,
-            self.app.image_data_path
-        )
+            self.app.image_data_path,
+            self.app.error_data_path,
+            self.app.event_data_path,
+            self.app.wave_data_path
+        )   # type: ignore
