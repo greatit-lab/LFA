@@ -57,8 +57,8 @@ class RegexManagementFrame(QWidget):
             subfolder = self.select_subfolder()  # 해당 정규 표현식에 매칭될 폴더 선택
             if subfolder:
                 # 정규 표현식과 선택된 폴더를 앱의 설정에 추가
-                self.app.regex_folders[pattern] = subfolder
-                save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+                self.app.regex_folders[pattern] = subfolder     # type: ignore
+                save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)    # type: ignore
                 self.update_regex_list()  # 리스트를 업데이트
 
     def edit_regex(self):
@@ -68,8 +68,8 @@ class RegexManagementFrame(QWidget):
             QMessageBox.warning(self, "Warning", "No pattern selected.")
             return
         selected_index = selected[0].row()  # 선택된 항목의 인덱스 가져오기
-        pattern = list(self.app.regex_folders.keys())[selected_index]
-        subfolder = self.app.regex_folders[pattern]
+        pattern = list(self.app.regex_folders.keys())[selected_index]   # type: ignore
+        subfolder = self.app.regex_folders[pattern]     # type: ignore
         # 기존의 패턴을 보여주고 수정할 수 있도록 대화상자를 표시
         new_pattern, ok = QInputDialog.getText(self, "Input", "Edit regex pattern:", text=pattern)
         if ok and new_pattern:
@@ -77,24 +77,24 @@ class RegexManagementFrame(QWidget):
             new_subfolder = self.select_subfolder(default_path=subfolder)
             if new_subfolder:
                 # 기존 패턴 삭제 후 새로운 패턴과 폴더를 저장
-                del self.app.regex_folders[pattern]
-                self.app.regex_folders[new_pattern] = new_subfolder
-                save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+                del self.app.regex_folders[pattern]     # type: ignore
+                self.app.regex_folders[new_pattern] = new_subfolder     # type: ignore
+                save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)    # type: ignore
                 self.update_regex_list()  # 리스트를 업데이트
 
     def remove_regex(self):
         # 선택된 정규 표현식을 삭제
         selected = self.regex_list.selectedIndexes()
         for index in sorted([idx.row() for idx in selected], reverse=True):
-            pattern = list(self.app.regex_folders.keys())[index]
-            del self.app.regex_folders[pattern]
+            pattern = list(self.app.regex_folders.keys())[index]    # type: ignore
+            del self.app.regex_folders[pattern]     # type: ignore
         # 삭제된 후 설정을 저장하고 리스트를 업데이트
-        save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)
+        save_settings(self.app.monitored_folders, self.app.dest_folder, self.app.regex_folders, self.app.exclude_folders, self.app.base_date_folder, self.app.target_compare_folders)    # type: ignore
         self.update_regex_list()
 
     def update_regex_list(self):
         # 현재 앱의 설정에서 정규 표현식 목록을 가져와 리스트 뷰를 업데이트
-        model = QStringListModel([f"{pattern} -> {subfolder}" for pattern, subfolder in self.app.regex_folders.items()])
+        model = QStringListModel([f"{pattern} -> {subfolder}" for pattern, subfolder in self.app.regex_folders.items()])    # type: ignore
         self.regex_list.setModel(model)
 
     def select_subfolder(self, default_path=''):
