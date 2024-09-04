@@ -41,8 +41,12 @@ def load_settings():
         config['Exclude'] = {}
         config['General'] = {'base_date_folder': 'Unselected', 'target_compare_folders': ''}
         config['Image'] = {'target_image_folder': 'Unselected', 'wait_time': '60', 'image_save_folder': ''}
-        config['Upload'] = {'wafer_flat_data_path': 'Unselected', 'prealign_data_path': 'Unselected', 'image_data_path': 'Unselected'}
-        save_settings([], '', {}, [], 'Unselected', [], 'Unselected', '60', '', 'Unselected', 'Unselected', 'Unselected')
+        config['Upload'] = {
+            'wafer_flat_data_path': 'Unselected', 'prealign_data_path': 'Unselected', 'image_data_path': 'Unselected',
+            'error_data_data_path': 'Unselected', 'event_data_path': 'Unselected', 'wave_data_path': 'Unselected'}
+        save_settings(
+            [], '', {}, [], 'Unselected', [], 'Unselected', '60', '', 'Unselected', 'Unselected', 'Unselected',
+            'Unselected', 'Unselected', 'Unselected')
     else:
         with open(CONFIG_FILE, 'r', encoding='utf-8') as configfile:
             config.read_file(configfile)  # 설정 파일을 읽습니다.
@@ -61,7 +65,9 @@ def load_settings():
         if 'Image' not in config:
             config['Image'] = {'target_image_folder': 'Unselected', 'wait_time': '60', 'image_save_folder': ''}
         if 'Upload' not in config:
-            config['Upload'] = {'wafer_flat_data_path': 'Unselected', 'prealign_data_path': 'Unselected', 'image_data_path': 'Unselected'}
+            config['Upload'] = {
+                'wafer_flat_data_path': 'Unselected', 'prealign_data_path': 'Unselected', 'image_data_path': 'Unselected',
+                'error_data_data_path': 'Unselected', 'event_data_path': 'Unselected', 'wave_data_path': 'Unselected'}
 
     # 설정 파일에서 값을 불러옵니다.
     monitored_folders = [normalize_path(folder) for key, folder in config.items('Folders')]
@@ -80,12 +86,15 @@ def load_settings():
     wafer_flat_data_path = config.get('Upload', 'wafer_flat_data_path', fallback='Unselected')
     prealign_data_path = config.get('Upload', 'prealign_data_path', fallback='Unselected')
     image_data_path = config.get('Upload', 'image_data_path', fallback='Unselected')
+    error_data_path = config.get('Upload', 'error_data_path', fallback='Unselected')
+    event_data_path = config.get('Upload', 'event_data_path', fallback='Unselected')
+    wave_data_path = config.get('Upload', 'wave_data_path', fallback='Unselected')
 
     # 불러온 값을 반환합니다.
-    return monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder, wafer_flat_data_path, prealign_data_path, image_data_path
+    return monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder, wafer_flat_data_path, prealign_data_path, image_data_path, error_data_path, event_data_path, wave_data_path
 
 # settings.ini 파일에 설정을 저장하는 함수입니다.
-def save_settings(monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder, wafer_flat_data_path, prealign_data_path, image_data_path):
+def save_settings(monitored_folders, dest_folder, regex_folders, exclude_folders, base_date_folder, target_compare_folders, target_image_folder, wait_time, image_save_folder, wafer_flat_data_path, prealign_data_path, image_data_path, error_data_path, event_data_path, wave_data_path):
     config = CaseSensitiveConfigParser()  # 대소문자를 구분하는 ConfigParser 객체를 생성합니다.
     # base_date_folder와 wf_info를 필터링하여 저장할 폴더 목록을 만듭니다.
     filtered_folders = [folder for folder in monitored_folders if folder != base_date_folder and not folder.startswith(os.path.join(dest_folder, 'wf_info'))]
@@ -106,6 +115,9 @@ def save_settings(monitored_folders, dest_folder, regex_folders, exclude_folders
         'wafer_flat_data_path': wafer_flat_data_path,
         'prealign_data_path': prealign_data_path,
         'image_data_path': image_data_path
+        'error_data_path': error_data_path,
+        'event_data_path': event_data_path,
+        'wave_data_path': wave_data_path
     }
 
     # 설정을 파일에 저장합니다.
