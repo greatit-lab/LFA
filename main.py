@@ -13,7 +13,7 @@ class AppContext:
         # EQPID(장비 ID)를 설정 파일에서 불러옵니다.
         self.eqpid = load_eqpid()
         # 설정 파일에서 다양한 설정을 불러옵니다.
-        self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders, self.target_image_folder, self.wait_time, self.image_save_folder, self.wafer_flat_data_path, self.prealign_data_path, self.image_data_path = load_settings()
+        self.monitored_folders, self.dest_folder, self.regex_folders, self.exclude_folders, self.base_date_folder, self.target_compare_folders,self.target_image_folder, self.wait_time, self.image_save_folder, self.wafer_flat_data_path, self.prealign_data_path, self.image_data_path, slef.error_data_path, self.event_data_path, self.wave_data_path = load_settings()
         self.base_dir = base_dir  # 로그를 저장할 기본 디렉토리를 설정합니다.
         self.logger = None  # 로거를 초기화하기 전까지는 None으로 설정합니다.
 
@@ -37,7 +37,10 @@ class AppContext:
             self.image_save_folder,
             self.wafer_flat_data_path,
             self.prealign_data_path,
-            self.image_data_path
+            self.image_data_path,
+            slef.error_data_path,
+            self.event_data_path,
+            self.wave_data_path
         )
 
 # 프로그램의 중복 실행을 방지하기 위해 다른 인스턴스가 실행 중인지 확인하는 함수입니다.
