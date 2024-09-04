@@ -65,7 +65,7 @@ class FolderMonitorFrame(QWidget):
         # 저장할 폴더를 선택하는 그룹박스를 만듭니다.
         save_groupbox = QGroupBox("Save to Folder")
         save_layout = QVBoxLayout()
-        self.save_folder_label = QLabel(self.app.dest_folder if self.app.dest_folder else "")
+        self.save_folder_label = QLabel(self.app.dest_folder if self.app.dest_folder else "")   # type: ignore
         self.save_button = QPushButton("Select Folder")  # 폴더 선택 버튼
         self.save_button.clicked.connect(self.select_save_folder)
         self.save_button_layout = QHBoxLayout()
@@ -89,8 +89,8 @@ class FolderMonitorFrame(QWidget):
         folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
             # 선택한 폴더 경로를 저장하고 UI에 표시합니다.
-            self.app.dest_folder = os.path.normpath(folder)  # 경로를 정규화하여 운영 체제에 맞게 표시
-            self.save_folder_label.setText(self.app.dest_folder)
+            self.app.dest_folder = os.path.normpath(folder)     # type: ignore  # 경로를 정규화하여 운영 체제에 맞게 표시
+            self.save_folder_label.setText(self.app.dest_folder)    # type: ignore
             # 설정을 저장합니다.
             save_settings(self.app.monitored_folders,self.app.dest_folder,self.app.regex_folders,self.app.exclude_folders,self.app.base_date_folder,self.app.target_compare_folders,self.app.target_image_folder,self.app.wait_time,self.app.image_save_folder,self.app.wafer_flat_data_path,self.app.prealign_data_path,self.app.image_data_path)  # type: ignore
 
@@ -99,7 +99,7 @@ class FolderMonitorFrame(QWidget):
         folder = QFileDialog.getExistingDirectory(self, "Select Folders to Monitor", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
             # 선택한 폴더를 목록에 추가하고 설정을 저장합니다.
-            self.app.monitored_folders.append(os.path.normpath(folder))  # 경로를 정규화하여 운영 체제에 맞게 표시
+            self.app.monitored_folders.append(os.path.normpath(folder))     # type: ignore  # 경로를 정규화하여 운영 체제에 맞게 표시
             save_settings(self.app.monitored_folders,self.app.dest_folder,self.app.regex_folders,self.app.exclude_folders,self.app.base_date_folder,self.app.target_compare_folders,self.app.target_image_folder,self.app.wait_time,self.app.image_save_folder,self.app.wafer_flat_data_path,self.app.prealign_data_path,self.app.image_data_path)  # type: ignore
             # 목록을 업데이트합니다.
             self.update_target_list()
@@ -108,14 +108,14 @@ class FolderMonitorFrame(QWidget):
         # 선택된 폴더를 모니터링 대상에서 제거하는 메서드입니다.
         selected = self.target_list.selectedIndexes()
         for index in sorted([index.row() for index in selected], reverse=True):
-            del self.app.monitored_folders[index]
+            del self.app.monitored_folders[index]   # type: ignore
         # 설정을 저장하고 목록을 업데이트합니다.
         save_settings(self.app.monitored_folders,self.app.dest_folder,self.app.regex_folders,self.app.exclude_folders,self.app.base_date_folder,self.app.target_compare_folders,self.app.target_image_folder,self.app.wait_time,self.app.image_save_folder,self.app.wafer_flat_data_path,self.app.prealign_data_path,self.app.image_data_path)  # type: ignore
         self.update_target_list()
 
     def update_target_list(self):
         # 모니터링할 폴더 목록을 UI에 업데이트하는 메서드입니다.
-        filtered_folders = [folder for folder in self.app.monitored_folders if folder != self.app.base_date_folder and not folder.startswith(os.path.join(self.app.dest_folder, 'wf_info'))]
+        filtered_folders = [folder for folder in self.app.monitored_folders if folder != self.app.base_date_folder and not folder.startswith(os.path.join(self.app.dest_folder, 'wf_info'))]    # type: ignore
         model = QStringListModel(filtered_folders)
         self.target_list.setModel(model)
 
@@ -124,7 +124,7 @@ class FolderMonitorFrame(QWidget):
         folder = QFileDialog.getExistingDirectory(self, "Select Folders to Exclude from Monitoring", "", QFileDialog.Option.ShowDirsOnly)
         if folder:
             # 선택한 폴더를 제외 목록에 추가하고 설정을 저장합니다.
-            self.app.exclude_folders.append(os.path.normpath(folder))  # 경로를 정규화하여 운영 체제에 맞게 표시
+            self.app.exclude_folders.append(os.path.normpath(folder))   # type: ignore  # 경로를 정규화하여 운영 체제에 맞게 표시
             save_settings(self.app.monitored_folders,self.app.dest_folder,self.app.regex_folders,self.app.exclude_folders,self.app.base_date_folder,self.app.target_compare_folders,self.app.target_image_folder,self.app.wait_time,self.app.image_save_folder,self.app.wafer_flat_data_path,self.app.prealign_data_path,self.app.image_data_path)  # type: ignore
             # 목록을 업데이트합니다.
             self.update_exclude_list()
@@ -133,14 +133,14 @@ class FolderMonitorFrame(QWidget):
         # 제외 폴더 목록에서 선택된 폴더를 제거하는 메서드입니다.
         selected = self.exclude_list.selectedIndexes()
         for index in sorted([index.row() for index in selected], reverse=True):
-            del self.app.exclude_folders[index]
+            del self.app.exclude_folders[index]     # type: ignore
         # 설정을 저장하고 목록을 업데이트합니다.
         save_settings(self.app.monitored_folders,self.app.dest_folder,self.app.regex_folders,self.app.exclude_folders,self.app.base_date_folder,self.app.target_compare_folders,self.app.target_image_folder,self.app.wait_time,self.app.image_save_folder,self.app.wafer_flat_data_path,self.app.prealign_data_path,self.app.image_data_path)  # type: ignore
         self.update_exclude_list()
 
     def update_exclude_list(self):
         # 제외할 폴더 목록을 UI에 업데이트하는 메서드입니다.
-        model = QStringListModel(self.app.exclude_folders)
+        model = QStringListModel(self.app.exclude_folders)      # type: ignore
         self.exclude_list.setModel(model)
 
     def set_controls_enabled(self, enabled):
