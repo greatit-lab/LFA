@@ -1,23 +1,15 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QHBoxLayout, QGroupBox
-from configparser import ConfigParser
 from config import save_settings
-from upload.wafer_flat_data import WaferFlatHandler
-from upload.prealign_data import PreAlignHandler
-from upload.image_data import ImageDataHandler
 
 class UploadDataFrame(QWidget):
     def __init__(self, parent=None, app=None):
+        # 초기화 메서드입니다. 부모 위젯과 앱 컨텍스트를 받아옵니다.
         super().__init__(parent)
-        self.app = app
-        self.eqpid = self.load_eqpid()  # EqpId 값을 로드합니다.
-        self.initUI()
-
-    def load_eqpid(self):
-        config = ConfigParser()
-        config.read('eqpid.ini')  # eqpid.ini 파일을 읽습니다.
-        return config['DEFAULT'].get('EqpId', 'Unknown')  # EqpId 값을 가져옵니다.
+        self.app = app  # 앱 컨텍스트를 저장합니다.
+        self.initUI()   # UI를 초기화하는 메서드를 호출
 
     def initUI(self):
+        # 메인 레이아웃을 설정합니다.
         main_layout = QVBoxLayout()
 
         # Database Uploading GroupBox
@@ -66,10 +58,55 @@ class UploadDataFrame(QWidget):
         image_data_layout.addWidget(self.image_data_combo)
         image_data_layout.addWidget(self.image_data_clear_button)
 
+        # Error Data Path
+        error_data_layout = QHBoxLayout()
+        self.error_data_label = QLabel("Error Data Path")
+        self.error_data_combo = QComboBox()
+        self.error_data_combo.addItem("Unselected")
+        self.error_data_combo.addItems(self.app.regex_folders.values())
+        self.error_data_combo.setCurrentText(self.app.error_data_path)
+        self.error_data_combo.currentTextChanged.connect(self.update_error_data_path)
+        self.error_data_clear_button = QPushButton("Clear")
+        self.error_data_clear_button.clicked.connect(self.clear_error_data_path)
+        error_data_layout.addWidget(self.error_data_label)
+        error_data_layout.addWidget(self.error_data_combo)
+        error_data_layout.addWidget(self.error_data_clear_button)
+
+        # Event Data Path
+        event_data_layout = QHBoxLayout()
+        self.event_data_label = QLabel("event Data Path")
+        self.event_data_combo = QComboBox()
+        self.event_data_combo.addItem("Unselected")
+        self.event_data_combo.addItems(self.app.regex_folders.values())
+        self.event_data_combo.setCurrentText(self.app.event_data_path)
+        self.event_data_combo.currentTextChanged.connect(self.update_event_data_path)
+        self.event_data_clear_button = QPushButton("Clear")
+        self.event_data_clear_button.clicked.connect(self.clear_event_data_path)
+        event_data_layout.addWidget(self.event_data_label)
+        event_data_layout.addWidget(self.event_data_combo)
+        event_data_layout.addWidget(self.event_data_clear_button)
+
+        # Wave Data Path
+        wave_data_layout = QHBoxLayout()
+        self.wave_data_label = QLabel("wave Data Path")
+        self.wave_data_combo = QComboBox()
+        self.wave_data_combo.addItem("Unselected")
+        self.wave_data_combo.addItems(self.app.regex_folders.values())
+        self.wave_data_combo.setCurrentText(self.app.wave_data_path)
+        self.wave_data_combo.currentTextChanged.connect(self.update_wave_data_path)
+        self.wave_data_clear_button = QPushButton("Clear")
+        self.wave_data_clear_button.clicked.connect(self.clear_wave_data_path)
+        wave_data_layout.addWidget(self.wave_data_label)
+        wave_data_layout.addWidget(self.wave_data_combo)
+        wave_data_layout.addWidget(self.wave_data_clear_button)
+
         # Add layouts to the database group layout
         database_layout.addLayout(wafer_flat_layout)
         database_layout.addLayout(prealign_layout)
         database_layout.addLayout(image_data_layout)
+        database_layout.addLayout(error_data_layout)
+        database_layout.addLayout(event_data_layout)
+        database_layout.addLayout(wave_data_layout)
 
         database_group.setLayout(database_layout)
         main_layout.addWidget(database_group)
@@ -97,6 +134,27 @@ class UploadDataFrame(QWidget):
     def clear_image_data_path(self):
         self.image_data_combo.setCurrentText("Unselected")
 
+    def update_error_data_path(self, text):
+        self.app.error_data_path = text
+        self.update_settings()
+
+    def clear_error_data_path(self):
+        self.error_data_combo.setCurrentText("Unselected")
+
+    def update_event_data_path(self, text):
+        self.app.event_data_path = text
+        self.update_settings()
+
+    def clear_event_data_path(self):
+        self.event_data_combo.setCurrentText("Unselected")
+
+    def update_wave_data_path(self, text):
+        self.app.wave_data_path = text
+        self.update_settings()
+
+    def clear_wave_data_path(self):
+        self.wave_data_combo.setCurrentText("Unselected")
+
     def update_settings(self):
         save_settings(
             self.app.monitored_folders,
@@ -110,7 +168,10 @@ class UploadDataFrame(QWidget):
             self.app.image_save_folder,
             self.app.wafer_flat_data_path,
             self.app.prealign_data_path,
-            self.app.image_data_path
+            self.app.image_data_path,
+            self.app.error_data_path,
+            self.app.event_data_path,
+            self.app.wave_data_path
         )
 
     def set_controls_enabled(self, enabled):
@@ -120,3 +181,9 @@ class UploadDataFrame(QWidget):
         self.prealign_clear_button.setEnabled(enabled)
         self.image_data_combo.setEnabled(enabled)
         self.image_data_clear_button.setEnabled(enabled)
+        self.error_data_combo.setEnabled(enabled)
+        self.error_data_clear_button.setEnabled(enabled)
+        self.event_data_combo.setEnabled(enabled)
+        self.event_data_clear_button.setEnabled(enabled)
+        self.wave_data_combo.setEnabled(enabled)
+        self.wave_data_clear_button.setEnabled(enabled)
